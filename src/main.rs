@@ -5,6 +5,10 @@
 // 4. Print tournament schedule
 use std::io;
 use rand::{thread_rng, Rng};
+use std::io::BufReader;
+use std::path::Path;
+use std::error::Error;
+use std::fs::File;
 
 enum GameType {
     Single,
@@ -28,7 +32,9 @@ struct Unit {
     name: String,
     unit_type: UnitType,
     // TODO: Problem: Techs can make units change attack types. How to deal?
-    unit_attack_type: UnitAttackType
+    unit_attack_type: UnitAttackType,
+    is_giant: bool,
+    is_rare: bool
 }
 
 fn main() {
@@ -126,9 +132,25 @@ fn enter_names(player_number: &i32) -> Vec<String> {
     names
 }
 
-fn randomize_unit_types(unit_type_number: &i32, unit_type_list: [UnitType; 25]) -> Vec<UnitType> {
+fn randomize_unit_types(unit_type_number: &i32, unit_type_list: [UnitType; 25])/* -> Vec<UnitType>*/ {
     let mut rng = thread_rng();
 
     // TODO: Check if 25 is included here
     rng.gen_range(1..25);
+
+    // Get the parsed json data and then loop an amount of times equal to the unit_type_number
+    // Add the randomized unit id to the vector each time, remove from the parsed json collection
+    parse_unit_data();
+
+}
+
+fn parse_unit_data() {
+    // Get File Reader
+    let path = Path::new("data/units.json");
+    let file = File::open(path);
+    let reader = BufReader::new(file);
+
+    let u = serde_json::from_reader(reader);
+
+    println!("{:?}", u.unwrap());
 }
