@@ -2,201 +2,201 @@
   {
     "id": 1,
     "name": "Crawler",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 2,
     "name": "Fang",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 3,
     "name": "Arclight",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 4,
     "name": "Marksman",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 5,
     "name": "Mustang",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 6,
     "name": "Sledgehammer",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 7,
     "name": "Stormcaller",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 8,
     "name": "Steel Ball",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 9,
     "name": "Tarantula",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 10,
     "name": "Rhino",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 11,
     "name": "Hacker",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 12,
     "name": "Wasp",
-    "UnitType": "Air",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Air",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 13,
     "name": "Phoenix",
-    "UnitType": "Air",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Air",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 14,
     "name": "Wraith",
-    "UnitType": "Air",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Air",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 15,
     "name": "Scorpion",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   },
   {
     "id": 16,
     "name": "Vulcan",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": true,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": true,
+    "is_rare": false
   },
   {
     "id": 17,
     "name": "Melting Point",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": true,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": true,
+    "is_rare": false
   },
   {
     "id": 18,
     "name": "Fortress",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": true,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": true,
+    "is_rare": false
   },
   {
     "id": 19,
     "name": "Sandworm",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": true,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": true,
+    "is_rare": false
   },
   {
     "id": 20,
     "name": "Overlord",
-    "UnitType": "Air",
-    "AttackType": "Ground_Air",
-    "Giant": true,
-    "Rare": false
+    "unit_type": "Air",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": true,
+    "is_rare": false
   },
   {
     "id": 21,
     "name": "War Factory",
-    "UnitType": "Ground",
-    "AttackType": "Ground",
-    "Giant": true,
-    "Rare": false
+    "unit_type": "Ground",
+    "unit_attack_type": "Ground",
+    "is_giant": true,
+    "is_rare": false
   },
   {
     "id": 22,
     "name": "Fire Badger",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": true 
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": true
   },
   {
     "id": 23,
     "name": "Sabertooth",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": true 
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": true
   },
   {
     "id": 24,
     "name": "Typhoon",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": true 
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": true
   },
   {
     "id": 25,
     "name": "Farseer",
-    "UnitType": "Ground",
-    "AttackType": "Ground_Air",
-    "Giant": false,
-    "Rare": true 
-  },
+    "unit_type": "Ground",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": true
+  }
 ]

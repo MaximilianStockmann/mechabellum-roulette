@@ -1,14 +1,14 @@
-// Features: 
+// Features:
 // 1. Enter tournament participants
 // 2. Automatic tournament pairing
 // 3. Randomize unit types allowed for use in match (pay attention to ground & air attack types)
 // 4. Print tournament schedule
-use std::io;
 use rand::{thread_rng, Rng};
-use std::io::BufReader;
-use std::path::Path;
+use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fs::File;
+use std::io;
+use std::io::BufReader;
 
 enum GameType {
     Single,
@@ -16,17 +16,20 @@ enum GameType {
     Ffa,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 enum UnitType {
     Air,
-    Ground
+    Ground,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 enum UnitAttackType {
     Air,
     Ground,
-    AirAndGround
+    AirAndGround,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
 struct Unit {
     id: i32,
     name: String,
@@ -34,7 +37,7 @@ struct Unit {
     // TODO: Problem: Techs can make units change attack types. How to deal?
     unit_attack_type: UnitAttackType,
     is_giant: bool,
-    is_rare: bool
+    is_rare: bool,
 }
 
 fn main() {
@@ -54,7 +57,7 @@ fn get_input() -> String {
     let mut input = String::new();
     match io::stdin().read_line(&mut input) {
         Err(error) => println!("Error occured: {error}"),
-        Ok(_) => ()
+        Ok(_) => (),
     }
     let final_input = String::from(input.trim());
     return final_input;
@@ -64,7 +67,7 @@ fn choice(choice_string: String) {
     match choice_string.as_str() {
         "1" => (), // change this to later start the tournament planning
         "2" => start_roulette(),
-        _ => println!("Please enter a different choice")
+        _ => println!("Please enter a different choice"),
     }
 }
 
@@ -94,7 +97,7 @@ fn roulette(choice: &GameType) {
     match choice {
         GameType::Single => roulette_single(),
         GameType::Double => roulette_double(),
-        GameType::Ffa => roulette_ffa()
+        GameType::Ffa => roulette_ffa(),
     }
 }
 
@@ -106,18 +109,19 @@ fn roulette_single() {
     println!("Please enter amount of unit types allowed in match (1..25): ");
     let unit_type_number = get_input();
 
+    let units = parse_unit_data();
+
+    println!("{:?}", units.unwrap());
 }
 
 fn roulette_double() {
     // TODO: This is different to ffa in that we can limit the necessity of ground & air attack
     // types to teams rather than players
     let player_number = 4;
-
 }
 
 fn roulette_ffa() {
     let player_number = 4;
-
 }
 
 fn enter_names(player_number: &i32) -> Vec<String> {
@@ -132,7 +136,9 @@ fn enter_names(player_number: &i32) -> Vec<String> {
     names
 }
 
-fn randomize_unit_types(unit_type_number: &i32, unit_type_list: [UnitType; 25])/* -> Vec<UnitType>*/ {
+fn randomize_unit_types(unit_type_number: &i32, unit_type_list: [UnitType; 25])
+/* -> Vec<UnitType>*/
+{
     let mut rng = thread_rng();
 
     // TODO: Check if 25 is included here
@@ -141,16 +147,17 @@ fn randomize_unit_types(unit_type_number: &i32, unit_type_list: [UnitType; 25])/
     // Get the parsed json data and then loop an amount of times equal to the unit_type_number
     // Add the randomized unit id to the vector each time, remove from the parsed json collection
     parse_unit_data();
-
 }
 
-fn parse_unit_data() {
-    // Get File Reader
-    let path = Path::new("data/units.json");
-    let file = File::open(path);
+fn parse_unit_data() -> Result<Vec<Unit>, Box<dyn Error>> {
+    let file = File::open("data/units.json")?;
     let reader = BufReader::new(file);
 
-    let u = serde_json::from_reader(reader);
+    let units: Vec<Unit> = match serde_json::from_reader(reader) {
+        Ok(data) => data,
+        Err(why) => panic!("{:?}", why),
+    };
 
-    println!("{:?}", u.unwrap());
+    println!("{:?}", units);
+    Ok(units)
 }
