@@ -3,9 +3,12 @@
 // 2. Automatic tournament pairing
 // 3. Randomize unit types allowed for use in match (pay attention to ground & air attack types)
 // 4. Print tournament schedule
+
+use core::fmt::{self, Formatter};
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
+use std::fmt::{write, Display};
 use std::fs::File;
 use std::io;
 use std::io::BufReader;
@@ -16,20 +19,21 @@ enum GameType {
     Ffa,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 enum UnitType {
     Air,
     Ground,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 enum UnitAttackType {
     Air,
     Ground,
     AirAndGround,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+//TODO: Implement Display trait for Unit
+#[derive(Debug, Serialize, Deserialize, Clone)]
 struct Unit {
     id: i32,
     name: String,
@@ -38,6 +42,12 @@ struct Unit {
     unit_attack_type: UnitAttackType,
     is_giant: bool,
     is_rare: bool,
+}
+
+impl Display for Unit {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.name)
+    }
 }
 
 fn main() {
@@ -102,16 +112,27 @@ fn roulette(choice: &GameType) {
 }
 
 fn roulette_single() {
-    let player_number = 2;
+    let player_number = 2usize;
     let names = enter_names(&player_number);
     println!("{:?}", names);
 
     println!("Please enter amount of unit types allowed in match (1..25): ");
-    let unit_type_number = get_input();
 
-    let units = parse_unit_data();
+    // Convert input to i32
+    let unit_type_number = (*get_input()).parse::<i32>().unwrap();
 
-    println!("{:?}", units.unwrap());
+    let units = parse_unit_data().unwrap();
+
+    for i in 0..player_number {
+        println!("Randomized units for {}", names[i]);
+        let player_units = randomize_unit_types(&unit_type_number, &units);
+        for unit in player_units {
+            println!("{}", unit)
+        }
+
+        //Print empty line for formatting purposes
+        println!("");
+    }
 }
 
 fn roulette_double() {
@@ -124,7 +145,7 @@ fn roulette_ffa() {
     let player_number = 4;
 }
 
-fn enter_names(player_number: &i32) -> Vec<String> {
+fn enter_names(player_number: &usize) -> Vec<String> {
     let mut names = Vec::<String>::new();
 
     println!("One after the other, please enter all player names: ");
@@ -136,17 +157,25 @@ fn enter_names(player_number: &i32) -> Vec<String> {
     names
 }
 
-fn randomize_unit_types(unit_type_number: &i32, unit_type_list: [UnitType; 25])
-/* -> Vec<UnitType>*/
-{
+// TODO: Adjust randomization to take into account attack types
+// TODO: Adjust so duplicate unit types are impossible
+// TODO: Adjust so there is an equal distribution of T1, T2, T3 units
+fn randomize_unit_types(unit_type_number: &i32, units: &Vec<Unit>) -> Vec<Unit> {
     let mut rng = thread_rng();
-
-    // TODO: Check if 25 is included here
-    rng.gen_range(1..25);
 
     // Get the parsed json data and then loop an amount of times equal to the unit_type_number
     // Add the randomized unit id to the vector each time, remove from the parsed json collection
-    parse_unit_data();
+    let mut selected_units = Vec::<Unit>::new();
+
+    for _ in 0..*unit_type_number {
+        // TODO: Check if 25 is included here
+        let random_unit_id = rng.gen_range(1..25);
+        let random_unit = units.iter().find(|e| e.id == random_unit_id).unwrap();
+        selected_units.push(random_unit.clone());
+    }
+    //Choose random units from units
+
+    selected_units
 }
 
 fn parse_unit_data() -> Result<Vec<Unit>, Box<dyn Error>> {
@@ -158,6 +187,5 @@ fn parse_unit_data() -> Result<Vec<Unit>, Box<dyn Error>> {
         Err(why) => panic!("{:?}", why),
     };
 
-    println!("{:?}", units);
     Ok(units)
 }
