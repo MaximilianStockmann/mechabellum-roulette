@@ -179,13 +179,17 @@ fn randomize_unit_types(unit_type_number: &i32, units: &Vec<Unit>) -> Vec<Unit> 
 }
 
 fn parse_unit_data() -> Result<Vec<Unit>, Box<dyn Error>> {
-    let file = File::open("data/units.json")?;
-    let reader = BufReader::new(file);
+    // let file = File::open("data/units.json")?;
+    let bytes = include_bytes!("../data/units.json");
+    // let reader = BufReader::new(file);
+    let s = std::str::from_utf8(bytes).unwrap();
 
-    let units: Vec<Unit> = match serde_json::from_reader(reader) {
+    let units: Vec<Unit> = serde_json::from_str(&s)?;
+
+    /* let units: Vec<Unit> = match serde_json::from_reader(reader) {
         Ok(data) => data,
         Err(why) => panic!("{:?}", why),
-    };
+    }; */
 
     Ok(units)
 }
