@@ -5,11 +5,17 @@
 // 4. Print tournament schedule
 
 use core::fmt::{self, Formatter};
+use core::panic;
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fmt::Display;
 use std::io;
+
+enum Tools {
+    Tournament,
+    Roulette,
+}
 
 enum GameType {
     Single,
@@ -47,8 +53,10 @@ impl Display for Unit {
 
 fn main() {
     print_welcome();
-    let input = get_input();
-    choice(input);
+    match tool_choice() {
+        Tools::Roulette => start_roulette(),
+        Tools::Tournament => (),
+    }
 }
 
 fn print_welcome() {
@@ -68,11 +76,14 @@ fn get_input() -> String {
     return final_input;
 }
 
-fn choice(choice_string: String) {
-    match choice_string.as_str() {
-        "1" => (), // change this to later start the tournament planning
-        "2" => start_roulette(),
-        _ => println!("Please enter a different choice"),
+fn tool_choice() -> Tools {
+    let input = get_input();
+    loop {
+        match input.as_str() {
+            "1" => return Tools::Tournament,
+            "2" => return Tools::Roulette,
+            _ => println!("Please enter a different choice"),
+        }
     }
 }
 
@@ -100,44 +111,37 @@ fn start_roulette() {
 
 fn roulette(choice: &GameType) {
     match choice {
-        GameType::Single => roulette_single(),
-        GameType::Double => roulette_double(),
-        GameType::Ffa => roulette_ffa(),
+        GameType::Single => execute_roulette(2),
+        GameType::Double => execute_roulette(4),
+        GameType::Ffa => execute_roulette(4),
     }
 }
 
-fn roulette_single() {
-    let player_number = 2usize;
+fn execute_roulette(player_number: usize) {
     let names = enter_names(&player_number);
     println!("{:?}", names);
 
     println!("Please enter amount of unit types allowed in match (1..25): ");
 
     // Convert input to i32
-    let unit_type_number = (*get_input()).parse::<i32>().unwrap();
+    let unit_number = (*get_input()).parse::<i32>().unwrap();
 
     let units = parse_unit_data().unwrap();
 
     for i in 0..player_number {
-        println!("Randomized units for {}", names[i]);
-        let player_units = randomize_unit_types(&unit_type_number, &units);
-        for unit in player_units {
-            println!("{}", unit)
-        }
-
-        //Print empty line for formatting purposes
-        println!("");
+        randomize_and_print(&names[i], &unit_number, &units);
     }
 }
 
-fn roulette_double() {
-    // TODO: This is different to ffa in that we can limit the necessity of ground & air attack
-    // types to teams rather than players
-    let player_number = 4;
-}
+fn randomize_and_print(player_name: &String, unit_number: &i32, unit_list: &Vec<Unit>) {
+    println!("Randomized units for {}", player_name);
+    let player_units = randomize_unit_types(&unit_number, &unit_list);
+    for unit in player_units {
+        println!("{}", unit)
+    }
 
-fn roulette_ffa() {
-    let player_number = 4;
+    //Print empty line for formatting purposes
+    println!("");
 }
 
 fn enter_names(player_number: &usize) -> Vec<String> {
