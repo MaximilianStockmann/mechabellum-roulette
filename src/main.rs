@@ -8,10 +8,8 @@ use core::fmt::{self, Formatter};
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
-use std::fmt::{write, Display};
-use std::fs::File;
+use std::fmt::Display;
 use std::io;
-use std::io::BufReader;
 
 enum GameType {
     Single,
@@ -25,20 +23,17 @@ enum UnitType {
     Ground,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 enum UnitAttackType {
-    Air,
     Ground,
     AirAndGround,
 }
 
-//TODO: Implement Display trait for Unit
 #[derive(Debug, Serialize, Deserialize, Clone)]
 struct Unit {
     id: i32,
     name: String,
     unit_type: UnitType,
-    // TODO: Problem: Techs can make units change attack types. How to deal?
     unit_attack_type: UnitAttackType,
     is_giant: bool,
     is_rare: bool,
@@ -157,39 +152,54 @@ fn enter_names(player_number: &usize) -> Vec<String> {
     names
 }
 
-// TODO: Adjust randomization to take into account attack types
-// TODO: Adjust so duplicate unit types are impossible
 // TODO: Adjust so there is an equal distribution of T1, T2, T3 units
 fn randomize_unit_types(unit_type_number: &i32, units: &Vec<Unit>) -> Vec<Unit> {
     let mut rng = thread_rng();
+    let final_units;
 
-    // Get the parsed json data and then loop an amount of times equal to the unit_type_number
-    // Add the randomized unit id to the vector each time, remove from the parsed json collection
-    let mut selected_units = Vec::<Unit>::new();
+    loop {
+        let mut selected_units = Vec::<Unit>::new();
+        let mut unit_id_cache: Vec<i32> = Vec::<i32>::new();
 
-    for _ in 0..*unit_type_number {
-        // TODO: Check if 25 is included here
-        let random_unit_id = rng.gen_range(1..25);
-        let random_unit = units.iter().find(|e| e.id == random_unit_id).unwrap();
-        selected_units.push(random_unit.clone());
+        for _ in 0..*unit_type_number {
+            let mut random_unit_id = rng.gen_range(1..=25);
+            loop {
+                if !unit_id_cache.contains(&random_unit_id) {
+                    unit_id_cache.push(random_unit_id);
+                    break;
+                }
+                random_unit_id = rng.gen_range(1..=25);
+            }
+
+            let random_unit = units.iter().find(|e| e.id == random_unit_id).unwrap();
+            selected_units.push(random_unit.clone());
+        }
+
+        if check_attack_types(&selected_units) {
+            final_units = selected_units;
+            break;
+        }
     }
-    //Choose random units from units
 
-    selected_units
+    final_units
+}
+
+fn check_attack_types(unit_list: &Vec<Unit>) -> bool {
+    let mut all_attack_types_present = false;
+
+    all_attack_types_present = unit_list
+        .iter()
+        .any(|unit| unit.unit_attack_type == UnitAttackType::AirAndGround)
+        || all_attack_types_present;
+
+    all_attack_types_present
 }
 
 fn parse_unit_data() -> Result<Vec<Unit>, Box<dyn Error>> {
-    // let file = File::open("data/units.json")?;
     let bytes = include_bytes!("../data/units.json");
-    // let reader = BufReader::new(file);
     let s = std::str::from_utf8(bytes).unwrap();
 
     let units: Vec<Unit> = serde_json::from_str(&s)?;
-
-    /* let units: Vec<Unit> = match serde_json::from_reader(reader) {
-        Ok(data) => data,
-        Err(why) => panic!("{:?}", why),
-    }; */
 
     Ok(units)
 }
