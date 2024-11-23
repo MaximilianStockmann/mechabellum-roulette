@@ -198,5 +198,13 @@
     "unit_attack_type": "AirAndGround",
     "is_giant": false,
     "is_rare": true
+  },
+  {
+    "id": 26,
+    "name": "Phantom Ray",
+    "unit_type": "Air",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": false,
+    "is_rare": false
   }
 ]

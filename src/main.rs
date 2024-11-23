@@ -121,7 +121,7 @@ fn execute_roulette(player_number: usize) {
     let names = enter_names(&player_number);
     println!("{:?}", names);
 
-    println!("Please enter amount of unit types allowed in match (1..25): ");
+    println!("Please enter amount of unit types allowed in match (1..26): ");
 
     // Convert input to i32
     let unit_number = (*get_input()).parse::<i32>().unwrap();
@@ -166,13 +166,13 @@ fn randomize_unit_types(unit_type_number: &i32, units: &Vec<Unit>) -> Vec<Unit> 
         let mut unit_id_cache: Vec<i32> = Vec::<i32>::new();
 
         for _ in 0..*unit_type_number {
-            let mut random_unit_id = rng.gen_range(1..=25);
+            let mut random_unit_id = rng.gen_range(1..=26);
             loop {
                 if !unit_id_cache.contains(&random_unit_id) {
                     unit_id_cache.push(random_unit_id);
                     break;
                 }
-                random_unit_id = rng.gen_range(1..=25);
+                random_unit_id = rng.gen_range(1..=26);
             }
 
             let random_unit = units.iter().find(|e| e.id == random_unit_id).unwrap();
