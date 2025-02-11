@@ -181,7 +181,7 @@
     "unit_type": "Ground",
     "unit_attack_type": "Ground",
     "is_giant": false,
-    "is_rare": true
+    "is_rare": false
   },
   {
     "id": 24,
@@ -205,6 +205,22 @@
     "unit_type": "Air",
     "unit_attack_type": "AirAndGround",
     "is_giant": false,
+    "is_rare": false
+  },
+  {
+    "id": 27,
+    "name": "Raiden",
+    "unit_type": "Air",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": true,
+    "is_rare": false
+  },
+  {
+    "id": 28,
+    "name": "Death Knell",
+    "unit_type": "Air",
+    "unit_attack_type": "AirAndGround",
+    "is_giant": true,
     "is_rare": false
   }
 ]

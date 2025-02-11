@@ -5,7 +5,6 @@
 // 4. Print tournament schedule
 
 use core::fmt::{self, Formatter};
-use core::panic;
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
@@ -14,7 +13,7 @@ use std::io;
 
 enum Tools {
     Tournament,
-    Roulette,
+    Roulette(GameType),
 }
 
 enum GameType {
@@ -53,10 +52,7 @@ impl Display for Unit {
 
 fn main() {
     print_welcome();
-    match tool_choice() {
-        Tools::Roulette => start_roulette(),
-        Tools::Tournament => (),
-    }
+    tool_choice();
 }
 
 fn print_welcome() {
@@ -76,37 +72,48 @@ fn get_input() -> String {
     return final_input;
 }
 
-fn tool_choice() -> Tools {
+fn tool_choice() {
     let input = get_input();
     loop {
-        match input.as_str() {
-            "1" => return Tools::Tournament,
-            "2" => return Tools::Roulette,
-            _ => println!("Please enter a different choice"),
+        let tool = match input.as_str() {
+            "1" => None, // Not implemented yet
+            "2" => roulette_choice(),
+            _ => {
+                println!("Please enter a different choice");
+                None
+            }
+        };
+
+        if let Some(selected_tool) = tool {
+            match selected_tool {
+                Tools::Roulette(roulette_type) => roulette(&roulette_type),
+                Tools::Tournament => (), // Not implemented yet
+            }
+            return;
         }
     }
 }
 
-fn start_roulette() {
+fn roulette_choice() -> Option<Tools> {
     println!("Choose game type: ");
     println!("1. 1v1");
     println!("2. 2v2");
     println!("3. FFA");
     let choice_string = get_input();
 
-    let choice: GameType;
+    let choice: Option<Tools>;
     match choice_string.as_str() {
-        "1" => choice = GameType::Single,
-        "2" => choice = GameType::Double,
-        "3" => choice = GameType::Ffa,
+        "1" => choice = Some(Tools::Roulette(GameType::Single)),
+        "2" => choice = Some(Tools::Roulette(GameType::Double)),
+        "3" => choice = Some(Tools::Roulette(GameType::Ffa)),
         _ => {
             // TODO: This has to enter into a repeat of the prompt
             println!("Please enter a different choice");
-            choice = GameType::Single;
+            choice = None
         }
-    };
+    }
 
-    roulette(&choice);
+    choice
 }
 
 fn roulette(choice: &GameType) {
@@ -119,14 +126,17 @@ fn roulette(choice: &GameType) {
 
 fn execute_roulette(player_number: usize) {
     let names = enter_names(&player_number);
+    let units = parse_unit_data().unwrap();
+
     println!("{:?}", names);
 
-    println!("Please enter amount of unit types allowed in match (1..26): ");
+    println!(
+        "Please enter amount of unit types allowed in match (1..{:?}): ",
+        units.len()
+    );
 
     // Convert input to i32
     let unit_number = (*get_input()).parse::<i32>().unwrap();
-
-    let units = parse_unit_data().unwrap();
 
     for i in 0..player_number {
         randomize_and_print(&names[i], &unit_number, &units);
@@ -166,13 +176,13 @@ fn randomize_unit_types(unit_type_number: &i32, units: &Vec<Unit>) -> Vec<Unit> 
         let mut unit_id_cache: Vec<i32> = Vec::<i32>::new();
 
         for _ in 0..*unit_type_number {
-            let mut random_unit_id = rng.gen_range(1..=26);
+            let mut random_unit_id = rng.gen_range(1..=27);
             loop {
                 if !unit_id_cache.contains(&random_unit_id) {
                     unit_id_cache.push(random_unit_id);
                     break;
                 }
-                random_unit_id = rng.gen_range(1..=26);
+                random_unit_id = rng.gen_range(1..=27);
             }
 
             let random_unit = units.iter().find(|e| e.id == random_unit_id).unwrap();
