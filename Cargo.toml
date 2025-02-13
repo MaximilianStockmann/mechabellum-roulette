@@ -1,5 +1,5 @@
 [package]
-name = "mechabellum-roulette"
+name = "mechabellum_roulette"
 version = "0.1.0"
 edition = "2021"
 
