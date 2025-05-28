@@ -51,8 +51,9 @@ pub fn randomize_unit_types(unit_type_number: &i32, units: &Vec<Unit>) -> Vec<Un
         let mut selected_units = Vec::<Unit>::new();
         let mut unit_id_cache: Vec<i32> = Vec::<i32>::new();
 
+        // TODO: Calculate range based on units in unit list
         for _ in 0..*unit_type_number {
-            let mut random_unit_id = rng.gen_range(1..=27);
+            let mut random_unit_id = rng.gen_range(1..=31);
             loop {
                 if !unit_id_cache.contains(&random_unit_id) {
                     unit_id_cache.push(random_unit_id);

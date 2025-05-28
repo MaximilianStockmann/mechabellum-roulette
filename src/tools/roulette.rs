@@ -31,11 +31,6 @@ pub fn execute_roulette(roulette_options: RouletteOptions, game_type: &GameType)
 pub fn execute_default_roulette(game_type: &GameType) {
     let units = unit::parse_unit_data().unwrap();
 
-    println!(
-        "Please enter amount of unit types allowed in match (1..{:?}): ",
-        units.len()
-    );
-
     // Convert input to i32
     let unit_number = 5;
 
